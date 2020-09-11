@@ -1,4 +1,4 @@
-# AuthFormApp
+# RocketsTestApp
 User registration form
 
 react-native init RocketsTestApp
