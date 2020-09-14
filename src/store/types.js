@@ -1,0 +1,2 @@
+export const GET_ROCKETS = 'GET_ROCKETS';
+export const LOAD_MORE_ROCKETS = 'LOAD_MORE_ROCKETS';

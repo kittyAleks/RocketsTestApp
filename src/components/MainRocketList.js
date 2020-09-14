@@ -1,13 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, Text, Platform, TouchableOpacity, Image, Button} from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
 import {FONTFAMILY} from '../theme';
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export const MainRocketList = ({item, rowID, onOpen}) => {
-    console.log('AAA', item)
     return (
         <View style={styles.mainContainer}>
             <TouchableOpacity key={item.id}>

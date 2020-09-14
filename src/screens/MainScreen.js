@@ -1,55 +1,41 @@
 import React, {useState, useEffect} from 'react'
 import { View, StyleSheet, ImageBackground, FlatList, ActivityIndicator } from 'react-native'
-import {Container, Input, InputGroup, Text} from 'native-base'
-import {MainRocketList} from "../components/MainRocketList";
-import LinearGradient from "react-native-linear-gradient";
+import { Container } from 'native-base'
+import { MainRocketList } from "../components/MainRocketList"
+import LinearGradient from "react-native-linear-gradient"
+import { useDispatch, useSelector } from "react-redux"
+import { getRockets, loadMoreRockets } from '../store/action/rocketsAction';
 
 export default function MainScreen({navigation, route}) {
     navigation.setOptions({
         headerTitle: 'Rockets Screen',
         headerBackground: () => <LinearGradient colors={['#9d74f2', '#D4BFF6']} style={{ height: '100%' }} />,
     });
-    // const item  = route.params;
-    const [allRockets, setAllRockets] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [page, setPage] = useState(1);
 
-    useEffect(() => {
-        getAllRockets();
+    const dispatch = useDispatch();
+    const rockets = useSelector(state => state.allRockets);
 
-    }, []);
+    useEffect( () => {
+        getRockets(1)
+            .then(rockets => {
+            dispatch(rockets);
+        }).catch(err => {
+            console.log("ERR", err);
+        });
 
-    let getAllRockets = async () => {
-        console.log('QQQ page', page)
-        await fetch(`https://api.swaggerhub.com/apis/?limit=10&${page}`, {
-        // await fetch(`https://ll.thespacedevs.com/2.0.0/launch/?${page}&limit=10`, {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-        })
-            .then(res => res.json())
-            .then((result) => {
-                console.log('[AAA result]', result);
-                const res = result.apis;
-                // const res = result.results;
-                setAllRockets([...allRockets, ...res]);
-                setIsLoading(false)
-            })
-            .catch((err) => {
-                console.log('[Error]', err.message);
-            });
-    };
+    }, [dispatch]);
 
-    const showMore = () => {
-        setPage(page + 1)
-        getAllRockets()
+    const showMore = (page = 1) => {
+        let pages = page + 1;
+        loadMoreRockets(pages)
+            .then(rockets => dispatch(rockets))
+
     };
     const renderFooter = () => {
         return <View style={{paddingVertical: 30}}>
             <ActivityIndicator size='large' color={'#4C55DD'}/>
         </View>
     };
-
-
 
     const openDetailRocketScreen = item => {
         navigation.navigate('DetailRocketScreen', {
@@ -70,7 +56,7 @@ export default function MainScreen({navigation, route}) {
             </View>
             <View style={{flex: 1}}>
                 <FlatList
-                    data={allRockets}
+                    data={rockets}
                     keyExtractor={(item, index) => index.toString()}
                     onEndReached={showMore}
                     onEndReachedThreshold={0.5}
@@ -81,34 +67,11 @@ export default function MainScreen({navigation, route}) {
                     }}
                 />
             </View>
-
         </Container>
     )
 }
 
 const styles = StyleSheet.create({
-    mainTextStyle: {
-        flexDirection: 'column',
-        paddingHorizontal: 30,
-        textAlign: 'center',
-        paddingVertical: 200,
-    },
-    titleSignUp: {
-        color: 'white',
-    },
-    title: {
-        fontSize: 35,
-        color: '#fff',
-        textAlign: 'center'
-    },
-    center: {
-        paddingTop: 3,
-    },
-    info: {
-        fontSize: 20,
-        marginHorizontal: 20,
-        margin: 20
-    },
 });
 
 
