@@ -1,5 +1,5 @@
-import {LOAD_MORE_ROCKETS }  from '../types'
-const GET_ROCKETS = 'GET_ROCKETS';
+import {LOAD_MORE_ROCKETS, GET_ROCKETS }  from '../types'
+import {rocketsAPI} from "../action/rocketsAction";
 
 const initialState = {
     allRockets: [],
@@ -7,7 +7,6 @@ const initialState = {
 };
 
 export const rocketsReducer = (state = initialState, action) => {
-    console.log('WWW action', action)
     switch (action.type) {
         case GET_ROCKETS: return {
             ...state,
@@ -23,4 +22,3 @@ export const rocketsReducer = (state = initialState, action) => {
             return state;
     }
 };
-

@@ -29,7 +29,6 @@ export default function MainScreen({navigation, route}) {
         let pages = page + 1;
         loadMoreRockets(pages)
             .then(rockets => dispatch(rockets))
-
     };
     const renderFooter = () => {
         return <View style={{paddingVertical: 30}}>
@@ -70,8 +69,4 @@ export default function MainScreen({navigation, route}) {
         </Container>
     )
 }
-
-const styles = StyleSheet.create({
-});
-
 
